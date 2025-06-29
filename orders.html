@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Orders - Smile Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .order {
+      background: #1e1e2f;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px auto;
+      max-width: 700px;
+    }
+
+    #loyalty {
+      text-align: center;
+      color: #0ff;
+      margin-top: 15px;
+    }
+
+    .confirm {
+      background: limegreen;
+      color: black;
+      padding: 5px 15px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav"><a href="index.html">← Back to Store</a></div>
+  <h1 style="text-align:center; color:#00f7ff;">📦 Order History</h1>
+  <div id="loyalty">🎁 Loyalty Points: 0</div>
+  <div id="orders"></div>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    const container = document.getElementById("orders");
+
+    let totalPoints = 0;
+
+    if (orders.length === 0) {
+      container.innerHTML = "<p style='text-align:center;'>No orders yet.</p>";
+    } else {
+      orders.reverse().forEach((order, index) => {
+        const div = document.createElement("div");
+        div.className = "order";
+        div.innerHTML = `
+          <p><b>Product:</b> ${order.product}</p>
+          <p><b>Price:</b> ₹${order.price}</p>
+          <p><b>Order ID:</b> ${order.id}</p>
+          <p><b>Time:</b> ${order.time}</p>
+          <p><b>Status:</b> ${order.confirmed ? "✅ Confirmed" : "❌ Pending"}</p>
+          ${!order.confirmed ? `<button class="confirm" onclick="confirmOrder(${index})">Mark as Paid</button>` : ""}
+        `;
+        container.appendChild(div);
+        if (order.confirmed) totalPoints += parseFloat(order.price);
+      });
+    }
+
+    document.getElementById("loyalty").innerText = "🎁 Loyalty Points: " + totalPoints;
+
+    function confirmOrder(index) {
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      orders[index].confirmed = true;
+      localStorage.setItem("orders", JSON.stringify(orders));
+      location.reload();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smile Store - Auto Buy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>🛍️ Smile Store</header>
+  <div class="nav">
+    <a href="index.html">Home</a> |
+    <a href="orders.html">📦 View Orders</a>
+  </div>
+
+  <div class="product">
+    <h2>🎬 Netflix Premium - ₹200</h2>
+    <input id="discount" type="text" placeholder="Discount code (optional)">
+    <button onclick="buy('Netflix Premium', 200)">Buy with Litecoin</button>
+  </div>
+
+  <footer>© 2025 Smile Store | Litecoin Auto Buy</footer>
+
+  <script>
+    const VALID_CODES = {
+      "10OFF": 10,
+      "SAVE20": 20
+    };
+
+    async function buy(product, originalPrice) {
+      let codeInput = document.getElementById("discount").value.trim().toUpperCase();
+      let discount = 0;
+
+      if (codeInput && VALID_CODES[codeInput]) {
+        discount = VALID_CODES[codeInput];
+        alert("✅ Discount code applied: " + discount + "% OFF");
+      } else if (codeInput) {
+        alert("❌ Invalid discount code");
+        return;
+      }
+
+      let finalPrice = originalPrice - (originalPrice * discount / 100);
+      const orderId = "ORDER_" + Date.now();
+
+      const data = {
+        price_amount: finalPrice.toFixed(2),
+        price_currency: "inr",
+        pay_currency: "ltc",
+        order_id: orderId,
+        order_description: product,
+        success_url: "https://nowpayments.io"
+      };
+
+      try {
+        const res = await fetch("https://api.nowpayments.io/v1/invoice", {
+          method: "POST",
+          headers: {
+            "x-api-key": "YOUR_NOWPAYMENTS_API_KEY",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+        if (result.invoice_url) {
+          savePendingOrder(product, finalPrice, orderId);
+          window.location.href = result.invoice_url;
+        } else {
+          alert("❌ Failed to create invoice: " + result.message);
+        }
+      } catch (err) {
+        alert("⚠️ Error: " + err.message);
+      }
+    }
+
+    function savePendingOrder(product, price, id) {
+      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
+      orders.push({ product, price, id, time: new Date().toLocaleString(), confirmed: false });
+      localStorage.setItem("orders", JSON.stringify(orders));
+    }
+  </script>
+</body>
+</html>
