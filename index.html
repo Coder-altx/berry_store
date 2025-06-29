@@ -1,97 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Berry Store - Auto Buy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smile Store - Auto Buy</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>🛍️ Berry Store</header>
-  <div class="nav">
-    <a href="index.html">Home</a> |
-    <a href="orders.html">📦 View Orders</a>
-  </div>
+  <div class="container">
+    <header>
+      <h1>🛍️ Smile Store</h1>
+      <p>Netflix Premium - ₹200</p>
+    </header>
 
-  <div class="product">
-    <h2>🎬 Netflix Premium - ₹200</h2>
-    <input id="discount" type="text" placeholder="Discount code (optional)">
-    <button class="order-btn" onclick="buy('Netflix Premium', 200)">Buy with Litecoin</button>
-  </div>
+    <div class="input-group">
+      <input type="text" id="discountCode" placeholder="Enter Discount Code" />
+      <button onclick="applyDiscount()">Apply</button>
+    </div>
 
-  <footer>© 2025 Berry Store | Litecoin Auto Buy</footer>
+    <p id="discountMsg"></p>
+    <p id="price">Final Price: ₹200</p>
+
+    <button class="buy-btn" onclick="buyNow()">
+      <div class="truck-icon">🚚</div>
+      <span>Buy with Litecoin</span>
+    </button>
+
+    <div class="road-animation" id="roadAnim">
+      <img src="https://i.postimg.cc/yNW2KxtL/delivery-van.png" id="van" alt="Van" />
+      <p id="doneMsg">Order Completed!</p>
+    </div>
+  </div>
 
   <script>
-    const VALID_CODES = {
+    let finalPrice = 200;
+    const validCodes = {
+      "SAVE50": 50,
       "10OFF": 10,
-      "SAVE20": 20
+      "NEW100": 100
     };
 
-    async function buy(product, originalPrice) {
-      let codeInput = document.getElementById("discount").value.trim().toUpperCase();
-      let discount = 0;
+    function applyDiscount() {
+      const code = document.getElementById("discountCode").value.toUpperCase();
+      const msg = document.getElementById("discountMsg");
+      const priceText = document.getElementById("price");
 
-      if (codeInput) {
-        if (VALID_CODES[codeInput]) {
-          discount = VALID_CODES[codeInput];
-          alert("✅ Discount applied: " + discount + "% OFF");
-        } else {
-          alert("❌ Invalid discount code");
-          return;
-        }
-      }
-
-      let finalPrice = originalPrice - (originalPrice * discount / 100);
-      const orderId = "ORDER_" + Date.now();
-
-      const data = {
-        price_amount: finalPrice.toFixed(2),
-        price_currency: "inr",
-        pay_currency: "ltc",
-        order_id: orderId,
-        order_description: product,
-        success_url: "https://nowpayments.io" // Replace if you host thank-you page
-      };
-
-      try {
-        const res = await fetch("https://api.nowpayments.io/v1/invoice", {
-          method: "POST",
-          headers: {
-            "x-api-key": "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-
-        const result = await res.json();
-        if (result.invoice_url) {
-          savePendingOrder(product, finalPrice, orderId);
-          window.location.href = result.invoice_url;
-        } else {
-          alert("❌ Failed: " + result.message);
-        }
-      } catch (err) {
-        alert("⚠️ Error: " + err.message);
+      if (validCodes[code]) {
+        finalPrice = 200 - validCodes[code];
+        msg.textContent = `✅ Discount applied: ₹${validCodes[code]}`;
+        msg.style.color = "green";
+        priceText.textContent = `Final Price: ₹${finalPrice}`;
+      } else {
+        msg.textContent = `❌ Invalid discount code`;
+        msg.style.color = "red";
+        finalPrice = 200;
+        priceText.textContent = `Final Price: ₹${finalPrice}`;
       }
     }
 
-    function savePendingOrder(product, price, id) {
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-      orders.push({ product, price, id, time: new Date().toLocaleString(), confirmed: false });
-      localStorage.setItem("orders", JSON.stringify(orders));
-    }
+    async function buyNow() {
+      const anim = document.getElementById("roadAnim");
+      const van = document.getElementById("van");
+      const msg = document.getElementById("doneMsg");
 
-    // Ripple effect
-    document.querySelectorAll('.order-btn').forEach(button => {
-      button.addEventListener('click', function(e) {
-        const ripple = document.createElement("span");
-        ripple.className = "ripple";
-        ripple.style.left = e.offsetX + "px";
-        ripple.style.top = e.offsetY + "px";
-        this.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
-      });
-    });
+      anim.style.display = "block";
+      van.classList.add("moveVan");
+
+      setTimeout(() => {
+        msg.style.opacity = 1;
+      }, 1300);
+
+      // Wait a moment before creating invoice
+      setTimeout(async () => {
+        const apiKey = "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9";
+        const productName = "Netflix Premium";
+        const orderId = "ORDER_" + Date.now();
+
+        const data = {
+          price_amount: finalPrice,
+          price_currency: "inr",
+          pay_currency: "ltc",
+          order_id: orderId,
+          order_description: productName,
+          success_url: "https://berrystore.icu/success"
+        };
+
+        try {
+          const res = await fetch("https://api.nowpayments.io/v1/invoice", {
+            method: "POST",
+            headers: {
+              "x-api-key": apiKey,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+          });
+
+          const json = await res.json();
+          if (json.invoice_url) {
+            window.location.href = json.invoice_url;
+          } else {
+            alert("❌ Error: " + json.message);
+          }
+        } catch (err) {
+          alert("⚠️ Failed to create invoice: " + err.message);
+        }
+      }, 2500);
+    }
   </script>
 </body>
 </html>
