@@ -1,114 +1,123 @@
+/* Global Styles */
 body {
   font-family: 'Segoe UI', sans-serif;
-  background: #121212;
-  color: #fff;
+  background-color: #f5f7fa;
+  color: #333;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 
+/* Container */
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Header */
 header {
-  background: linear-gradient(45deg, #00f7ff, #00d0ff);
-  color: #000;
-  text-align: center;
+  background-color: #00b894;
+  color: white;
   padding: 20px;
-  font-size: 26px;
-  font-weight: bold;
-  animation: slideIn 1s ease;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
-@keyframes slideIn {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+header h1 {
+  margin: 0;
 }
 
-.nav {
-  text-align: center;
-  margin: 10px 0;
-}
-
-.nav a {
-  color: #00f7ff;
-  text-decoration: none;
-  font-weight: bold;
-  margin: 0 10px;
-  transition: color 0.3s;
-}
-
-.nav a:hover {
-  color: #0ff;
-}
-
-.product {
-  background: #1f1f2e;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px auto;
-  max-width: 700px;
-  box-shadow: 0 0 12px rgba(0,255,255,0.15);
-  animation: fadeIn 1s ease;
+/* Input Group */
+.input-group {
+  margin: 20px 0;
 }
 
 input[type="text"] {
-  width: 100%;
   padding: 10px;
-  border-radius: 8px;
-  border: none;
-  margin-top: 10px;
-}
-
-footer {
-  text-align: center;
-  color: #aaa;
-  margin-top: 30px;
-  font-size: 14px;
-  opacity: 0.7;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Glowing Ripple Order Button */
-.order-btn {
-  position: relative;
-  background: #00f7ff;
-  color: #000;
-  font-weight: bold;
-  border: none;
-  border-radius: 50px;
-  padding: 12px 28px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 60%;
   font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 0 15px #00f7ff80, 0 0 25px #00f7ff80;
-  animation: pulse 2s infinite;
-  transition: transform 0.2s ease;
-  overflow: hidden;
 }
 
-.order-btn:hover {
+.input-group button {
+  padding: 10px 15px;
+  border: none;
+  background-color: #00cec9;
+  color: white;
+  border-radius: 5px;
+  font-size: 15px;
+  margin-left: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.input-group button:hover {
+  background-color: #00b0b0;
+}
+
+/* Discount message and price */
+#discountMsg {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+#price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Buy Button */
+.buy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  background-color: #0984e3;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 17px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.buy-btn:hover {
+  background-color: #0652dd;
   transform: scale(1.05);
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 10px #00f7ff80; }
-  50% { box-shadow: 0 0 20px #00f7ff; }
-  100% { box-shadow: 0 0 10px #00f7ff80; }
+.truck-icon {
+  font-size: 22px;
 }
 
-.ripple {
+/* Road animation */
+.road-animation {
+  position: relative;
+  height: 120px;
+  margin-top: 40px;
+  overflow: hidden;
+  display: none;
+}
+
+#van {
+  width: 100px;
   position: absolute;
-  background: #fff;
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 0.6s linear;
-  opacity: 0.7;
-  pointer-events: none;
+  left: -120px;
+  top: 10px;
+  transition: left 1.3s ease-in-out;
 }
 
-@keyframes ripple {
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
+.moveVan {
+  left: 110%;
 }
+
+#doneMsg {
+  opacity: 0;
+  font-size: 22px;
+  color: #2ecc71;
+  margin-top: 60px;
+  transition: opacity 1s ease;
+  }
