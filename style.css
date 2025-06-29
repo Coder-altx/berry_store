@@ -1,82 +1,87 @@
+
 body {
-  font-family: Arial, sans-serif;
-  background-color: #111;
+  font-family: 'Segoe UI', sans-serif;
+  background: #121212;
   color: #fff;
-  text-align: center;
+  margin: 0;
   padding: 20px;
 }
 
-.container {
-  background-color: #00e5ff;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 400px;
-  margin: auto;
-  box-shadow: 0 0 15px #00e5ff;
+header {
+  background: linear-gradient(45deg, #00f7ff, #00d0ff);
+  color: #000;
+  text-align: center;
+  padding: 20px;
+  font-size: 26px;
+  font-weight: bold;
+  animation: slideIn 1s ease;
 }
 
-.product-name {
-  font-size: 1.5em;
-  margin-bottom: 15px;
-  color: #000;
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.nav {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.nav a {
+  color: #00f7ff;
+  text-decoration: none;
+  font-weight: bold;
+  margin: 0 10px;
+  transition: color 0.3s;
+}
+
+.nav a:hover {
+  color: #0ff;
+}
+
+.product {
+  background: #1f1f2e;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 700px;
+  box-shadow: 0 0 12px rgba(0,255,255,0.15);
+  animation: fadeIn 1s ease;
 }
 
 input[type="text"] {
-  padding: 8px;
-  width: 80%;
-  border-radius: 6px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
   border: none;
-  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 button {
+  margin-top: 10px;
   padding: 10px 20px;
-  margin: 10px;
-  font-size: 1em;
+  background: #00f7ff;
+  color: #000;
   border: none;
-  border-radius: 6px;
-  background-color: #fff;
+  border-radius: 8px;
+  font-weight: bold;
   cursor: pointer;
   transition: background 0.3s;
 }
 
 button:hover {
-  background-color: #ccc;
+  background: #00e5ff;
 }
 
-#animationArea {
-  position: relative;
-  height: 150px;
+footer {
+  text-align: center;
+  color: #aaa;
   margin-top: 30px;
-  overflow: hidden;
+  font-size: 14px;
+  opacity: 0.7;
 }
 
-#van {
-  width: 100px;
-  position: absolute;
-  left: -120px;
-  top: 30px;
-  display: none;
-}
-
-#van.animate {
-  animation: driveAway 2s ease forwards;
-}
-
-@keyframes driveAway {
-  0% {
-    left: -120px;
-    transform: scale(1);
-  }
-  100% {
-    left: 120%;
-    transform: scale(1.1) rotate(2deg);
-  }
-}
-
-#orderText {
-  display: none;
-  font-size: 1.2em;
-  color: limegreen;
-  margin-top: 10px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
