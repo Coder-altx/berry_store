@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Berry Store- Auto Buy LTC</title>
+  <title>Berry Store - Auto Buy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,13 +16,7 @@
   <div class="product">
     <h2>🎬 Netflix Premium - ₹200</h2>
     <input id="discount" type="text" placeholder="Discount code (optional)">
-    <button onclick="buy('Netflix Premium', 200)">Buy with Litecoin</button>
-  </div>
-
-  <div class="product">
-    <h2>🎮 Minecraft Java Acccount- ₹185</h2>
-    <input id="discount" type="text" placeholder="Discount code (optional)">
-    <button onclick="buy('MCFA JAVA', 185)">Buy with Litecoin</button>
+    <button class="order-btn" onclick="buy('Netflix Premium', 200)">Buy with Litecoin</button>
   </div>
 
   <footer>© 2025 Berry Store | Litecoin Auto Buy</footer>
@@ -38,12 +31,14 @@
       let codeInput = document.getElementById("discount").value.trim().toUpperCase();
       let discount = 0;
 
-      if (codeInput && VALID_CODES[codeInput]) {
-        discount = VALID_CODES[codeInput];
-        alert("✅ Discount code applied: " + discount + "% OFF");
-      } else if (codeInput) {
-        alert("❌ Invalid discount code");
-        return;
+      if (codeInput) {
+        if (VALID_CODES[codeInput]) {
+          discount = VALID_CODES[codeInput];
+          alert("✅ Discount applied: " + discount + "% OFF");
+        } else {
+          alert("❌ Invalid discount code");
+          return;
+        }
       }
 
       let finalPrice = originalPrice - (originalPrice * discount / 100);
@@ -55,7 +50,7 @@
         pay_currency: "ltc",
         order_id: orderId,
         order_description: product,
-        success_url: "https://nowpayments.io"
+        success_url: "https://nowpayments.io" // Replace if you host thank-you page
       };
 
       try {
@@ -73,7 +68,7 @@
           savePendingOrder(product, finalPrice, orderId);
           window.location.href = result.invoice_url;
         } else {
-          alert("❌ Failed to create invoice: " + result.message);
+          alert("❌ Failed: " + result.message);
         }
       } catch (err) {
         alert("⚠️ Error: " + err.message);
@@ -85,6 +80,18 @@
       orders.push({ product, price, id, time: new Date().toLocaleString(), confirmed: false });
       localStorage.setItem("orders", JSON.stringify(orders));
     }
+
+    // Ripple effect
+    document.querySelectorAll('.order-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.left = e.offsetX + "px";
+        ripple.style.top = e.offsetY + "px";
+        this.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+      });
+    });
   </script>
 </body>
 </html>
