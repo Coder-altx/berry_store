@@ -1,4 +1,3 @@
-
 body {
   font-family: 'Segoe UI', sans-serif;
   background: #121212;
@@ -57,22 +56,6 @@ input[type="text"] {
   margin-top: 10px;
 }
 
-button {
-  margin-top: 10px;
-  padding: 10px 20px;
-  background: #00f7ff;
-  color: #000;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #00e5ff;
-}
-
 footer {
   text-align: center;
   color: #aaa;
@@ -84,4 +67,48 @@ footer {
 @keyframes fadeIn {
   from { opacity: 0; transform: scale(0.95); }
   to { opacity: 1; transform: scale(1); }
+}
+
+/* Glowing Ripple Order Button */
+.order-btn {
+  position: relative;
+  background: #00f7ff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 50px;
+  padding: 12px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 15px #00f7ff80, 0 0 25px #00f7ff80;
+  animation: pulse 2s infinite;
+  transition: transform 0.2s ease;
+  overflow: hidden;
+}
+
+.order-btn:hover {
+  transform: scale(1.05);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 10px #00f7ff80; }
+  50% { box-shadow: 0 0 20px #00f7ff; }
+  100% { box-shadow: 0 0 10px #00f7ff80; }
+}
+
+.ripple {
+  position: absolute;
+  background: #fff;
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 0.6s linear;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
