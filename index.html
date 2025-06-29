@@ -3,108 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Smile Store - Auto Buy</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Online Store</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <header>
-      <h1>🛍️ Smile Store</h1>
-      <p>Netflix Premium - ₹200</p>
-    </header>
+    <h1>🛍️ Online Store</h1>
+    <p class="product-name">Netflix Premium - ₹200</p>
 
-    <div class="input-group">
-      <input type="text" id="discountCode" placeholder="Enter Discount Code" />
-      <button onclick="applyDiscount()">Apply</button>
-    </div>
+    <input type="text" id="discountCode" placeholder="Enter Discount Code" />
+    <button onclick="applyDiscount()">Apply</button>
 
-    <p id="discountMsg"></p>
-    <p id="price">Final Price: ₹200</p>
+    <p id="finalPrice">Final Price: ₹200</p>
+    <button id="buyBtn" onclick="buyWithLitecoin()">🚛 Buy with Litecoin</button>
 
-    <button class="buy-btn" onclick="buyNow()">
-      <div class="truck-icon">🚚</div>
-      <span>Buy with Litecoin</span>
-    </button>
-
-    <div class="road-animation" id="roadAnim">
-      <img src="https://i.postimg.cc/yNW2KxtL/delivery-van.png" id="van" alt="Van" />
-      <p id="doneMsg">Order Completed!</p>
+    <div id="animationArea">
+      <img id="van" src="https://www.pngall.com/wp-content/uploads/5/Delivery-Van-PNG-Clipart.png" alt="Van" />
+      <div id="orderText">Order Completed!</div>
     </div>
   </div>
 
   <script>
+    let originalPrice = 200;
     let finalPrice = 200;
-    const validCodes = {
-      "SAVE50": 50,
-      "10OFF": 10,
-      "NEW100": 100
-    };
 
     function applyDiscount() {
-      const code = document.getElementById("discountCode").value.toUpperCase();
-      const msg = document.getElementById("discountMsg");
-      const priceText = document.getElementById("price");
-
-      if (validCodes[code]) {
-        finalPrice = 200 - validCodes[code];
-        msg.textContent = `✅ Discount applied: ₹${validCodes[code]}`;
-        msg.style.color = "green";
-        priceText.textContent = `Final Price: ₹${finalPrice}`;
-      } else {
-        msg.textContent = `❌ Invalid discount code`;
-        msg.style.color = "red";
-        finalPrice = 200;
-        priceText.textContent = `Final Price: ₹${finalPrice}`;
+      const code = document.getElementById("discountCode").value.trim();
+      let discount = 0;
+      if (code === "10OFF") {
+        discount = 10;
+      } else if (code === "20OFF") {
+        discount = 20;
       }
+
+      finalPrice = originalPrice - discount;
+      document.getElementById("finalPrice").textContent = `Final Price: ₹${finalPrice}`;
     }
 
-    async function buyNow() {
-      const anim = document.getElementById("roadAnim");
+    function buyWithLitecoin() {
       const van = document.getElementById("van");
-      const msg = document.getElementById("doneMsg");
+      const orderText = document.getElementById("orderText");
+      
+      van.style.display = "block";
+      van.classList.remove("animate");
+      orderText.style.display = "none";
 
-      anim.style.display = "block";
-      van.classList.add("moveVan");
+      // Restart animation
+      void van.offsetWidth;
+
+      van.classList.add("animate");
 
       setTimeout(() => {
-        msg.style.opacity = 1;
-      }, 1300);
-
-      // Wait a moment before creating invoice
-      setTimeout(async () => {
-        const apiKey = "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9";
-        const productName = "Netflix Premium";
-        const orderId = "ORDER_" + Date.now();
-
-        const data = {
-          price_amount: finalPrice,
-          price_currency: "inr",
-          pay_currency: "ltc",
-          order_id: orderId,
-          order_description: productName,
-          success_url: "https://berrystore.icu/success"
-        };
-
-        try {
-          const res = await fetch("https://api.nowpayments.io/v1/invoice", {
-            method: "POST",
-            headers: {
-              "x-api-key": apiKey,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-          });
-
-          const json = await res.json();
-          if (json.invoice_url) {
-            window.location.href = json.invoice_url;
-          } else {
-            alert("❌ Error: " + json.message);
-          }
-        } catch (err) {
-          alert("⚠️ Failed to create invoice: " + err.message);
-        }
-      }, 2500);
+        orderText.style.display = "block";
+      }, 2000);
     }
   </script>
 </body>
