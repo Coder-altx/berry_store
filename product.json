@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Netflix Premium",
+    "price": 200,
+    "discount": 20,
+    "category": "Subscription",
+    "image": "https://i.imgur.com/yN1PZ2B.png"
+  },
+  {
+    "name": "Discord Nitro Boost",
+    "price": 150,
+    "discount": 0,
+    "category": "Discord",
+    "image": "https://i.imgur.com/1q9Zpwb.png"
+  },
+  {
+    "name": "Canva Pro 1-Month",
+    "price": 100,
+    "discount": 10,
+    "category": "Subscription",
+    "image": "https://i.imgur.com/zxZXTYx.png"
+  },
+  {
+    "name": "Minecraft Java Account",
+    "price": 299,
+    "discount": 49,
+    "category": "Games",
+    "image": "https://i.imgur.com/K7aPZjM.png"
+  }
+]
