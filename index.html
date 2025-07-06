@@ -1,84 +1,44 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Berry Store - Auto Buy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Berry Store 🍓</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>🛍️ Berry Store</header>
-  <div class="nav">
-    <a href="index.html">Home</a> |
-    <a href="orders.html">📦 View Orders</a>
+  <header>
+    <h1>🍓 Berry Store</h1>
+    <p>Pay with Litecoin, receive by email 💌</p>
+    <input type="text" id="searchBar" placeholder="Search products..." oninput="filterProducts()" />
+  </header>
+
+  <div class="filters">
+    <button onclick="filterCategory('all')">All</button>
+    <button onclick="filterCategory('Subscription')">Subscriptions</button>
+    <button onclick="filterCategory('Discord')">Discord Items</button>
+    <button onclick="filterCategory('Games')">Games</button>
   </div>
 
-  <div class="product">
-    <h2>🎬 Netflix Premium - ₹200</h2>
-    <input id="discount" type="text" placeholder="Discount code (optional)">
-    <button onclick="buy('Netflix Premium', 200)">Buy with Litecoin</button>
+  <main id="product-list"></main>
+
+  <section class="order-log">
+    <h2>📝 Recent Orders</h2>
+    <ul id="orderList"></ul>
+  </section>
+
+  <div class="overlay" id="buyOverlay">
+    <div class="popup">
+      <h2>🍓 Confirm Purchase</h2>
+      <p id="popup-product-name"></p>
+      <p id="popup-final-price"></p>
+      <input type="email" id="userEmail" placeholder="Enter your email" required/>
+      <input type="text" id="discountCode" placeholder="Discount code (optional)" />
+      <button onclick="startPayment()">✅ Pay with Litecoin</button>
+      <button onclick="closeOverlay()">❌ Cancel</button>
+    </div>
   </div>
 
-  <footer>© 2025 Berry Store | Litecoin Auto Buy</footer>
-
-  <script>
-    const VALID_CODES = {
-      "10OFF": 10,
-      "SAVE20": 20
-    };
-
-    async function buy(product, originalPrice) {
-      let codeInput = document.getElementById("discount").value.trim().toUpperCase();
-      let discount = 0;
-
-      if (codeInput && VALID_CODES[codeInput]) {
-        discount = VALID_CODES[codeInput];
-        alert("✅ Discount code applied: " + discount + "% OFF");
-      } else if (codeInput) {
-        alert("❌ Invalid discount code");
-        return;
-      }
-
-      let finalPrice = originalPrice - (originalPrice * discount / 100);
-      const orderId = "ORDER_" + Date.now();
-
-      const data = {
-        price_amount: finalPrice.toFixed(2),
-        price_currency: "inr",
-        pay_currency: "ltc",
-        order_id: orderId,
-        order_description: product,
-        success_url: "https://nowpayments.io"
-      };
-
-      try {
-        const res = await fetch("https://api.nowpayments.io/v1/invoice", {
-          method: "POST",
-          headers: {
-            "x-api-key": "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(data)
-        });
-
-        const result = await res.json();
-        if (result.invoice_url) {
-          savePendingOrder(product, finalPrice, orderId);
-          window.location.href = result.invoice_url;
-        } else {
-          alert("❌ Failed to create invoice: " + result.message);
-        }
-      } catch (err) {
-        alert("⚠️ Error: " + err.message);
-      }
-    }
-
-    function savePendingOrder(product, price, id) {
-      const orders = JSON.parse(localStorage.getItem("orders") || "[]");
-      orders.push({ product, price, id, time: new Date().toLocaleString(), confirmed: false });
-      localStorage.setItem("orders", JSON.stringify(orders));
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
