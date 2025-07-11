@@ -1,41 +1,24 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Berry Store 🍓</title>
-  <link rel="stylesheet" href="style.css"/>
+  <title>Berry Store</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
-  <header>
-    <h1>🍓 Berry Store</h1>
-    <p>Pay with Litecoin, receive by email 💌</p>
-    <input type="text" id="searchBar" placeholder="Search products..." oninput="filterProducts()" />
-  </header>
+  <div class="container">
+    <h1>🍓 Welcome to Berry Store</h1>
 
-  <div class="filters">
-    <button onclick="filterCategory('all')">All</button>
-    <button onclick="filterCategory('Subscription')">Subscriptions</button>
-    <button onclick="filterCategory('Discord')">Discord Items</button>
-    <button onclick="filterCategory('Games')">Games</button>
-  </div>
-
-  <main id="product-list"></main>
-
-  <section class="order-log">
-    <h2>📝 Recent Orders</h2>
-    <ul id="orderList"></ul>
-  </section>
-
-  <div class="overlay" id="buyOverlay">
-    <div class="popup">
-      <h2>🍓 Confirm Purchase</h2>
-      <p id="popup-product-name"></p>
-      <p id="popup-final-price"></p>
-      <input type="email" id="userEmail" placeholder="Enter your email" required/>
-      <input type="text" id="discountCode" placeholder="Discount code (optional)" />
-      <button onclick="startPayment()">✅ Pay with Litecoin</button>
-      <button onclick="closeOverlay()">❌ Cancel</button>
+    <div class="product">
+      <h2>Netflix Premium</h2>
+      <p>Price: ₹200</p>
+      <input type="email" id="email" placeholder="Enter your email" required>
+      <input type="text" id="discountCode" placeholder="Enter discount code (optional)">
+      <button onclick="payWithRazorpay()">Pay with UPI</button>
+      <button onclick="payWithLTC()">Pay with Litecoin</button>
     </div>
   </div>
 
