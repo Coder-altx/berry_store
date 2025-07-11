@@ -1,16 +1,18 @@
-
 const LTC_API_KEY = "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9";
 
+// Razorpay UPI Payment
 function payWithRazorpay() {
   const email = document.getElementById("email").value;
+  if (!email) return alert("Please enter your email before proceeding.");
+
   const options = {
     "key": "rzp_test_1234567890abcdef", // Replace with your Razorpay public key
-    "amount": 20000, // 200 INR in paise
+    "amount": 20000, // ₹200 in paise
     "currency": "INR",
     "name": "Berry Store",
     "description": "Netflix Premium",
-    "handler": function (response){
-      alert("Payment successful! Razorpay ID: " + response.razorpay_payment_id);
+    "handler": function (response) {
+      alert("✅ Payment successful!\nPayment ID: " + response.razorpay_payment_id);
     },
     "prefill": {
       "email": email
@@ -19,12 +21,16 @@ function payWithRazorpay() {
       "color": "#F37254"
     }
   };
+
   const rzp = new Razorpay(options);
   rzp.open();
 }
 
+// Litecoin Payment
 async function payWithLTC() {
   const email = document.getElementById("email").value;
+  if (!email) return alert("Please enter your email before proceeding.");
+
   const data = {
     price_amount: 200,
     price_currency: "inr",
@@ -48,9 +54,15 @@ async function payWithLTC() {
     if (json.invoice_url) {
       window.location.href = json.invoice_url;
     } else {
-      alert("Error: " + json.message);
+      alert("❌ Error: " + (json.message || "Failed to create invoice"));
     }
   } catch (err) {
-    alert("Failed to create Litecoin invoice.");
+    alert("❌ Failed to create Litecoin invoice. Please try again later.");
   }
 }
+
+// Attach events (safely after page load)
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("upiPayBtn").addEventListener("click", payWithRazorpay);
+  document.getElementById("ltcPayBtn").addEventListener("click", payWithLTC);
+});
