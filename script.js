@@ -5,7 +5,7 @@ function payWithRazorpay() {
   if (!email) return alert("Please enter your email before proceeding.");
 
   const options = {
-    "key": "rzp_test_1234567890abcdef", // Replace with your real Razorpay key
+    "key": "rzp_test_sSwnBcXICv7dLm", // Replace with your real Razorpay key
     "amount": 20000, // ₹200 in paise
     "currency": "INR",
     "name": "Berry Store",
