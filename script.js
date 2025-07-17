@@ -1,12 +1,11 @@
 const LTC_API_KEY = "1BMHTGF-2RVM5EF-KNP118R-8ZHYRQ9";
 
-// Razorpay UPI Payment
 function payWithRazorpay() {
   const email = document.getElementById("email").value;
   if (!email) return alert("Please enter your email before proceeding.");
 
   const options = {
-    "key": "rzp_test_sSwnBcXICv7dLm", // Replace with your Razorpay public key
+    "key": "rzp_test_1234567890abcdef", // Replace with your real Razorpay key
     "amount": 20000, // ₹200 in paise
     "currency": "INR",
     "name": "Berry Store",
@@ -17,6 +16,12 @@ function payWithRazorpay() {
     "prefill": {
       "email": email
     },
+    "method": {
+      upi: true,        // ✅ Show UPI option
+      card: false,
+      netbanking: false,
+      wallet: false
+    },
     "theme": {
       "color": "#F37254"
     }
@@ -26,7 +31,6 @@ function payWithRazorpay() {
   rzp.open();
 }
 
-// Litecoin Payment
 async function payWithLTC() {
   const email = document.getElementById("email").value;
   if (!email) return alert("Please enter your email before proceeding.");
@@ -61,7 +65,6 @@ async function payWithLTC() {
   }
 }
 
-// Attach events (safely after page load)
 document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("upiPayBtn").addEventListener("click", payWithRazorpay);
   document.getElementById("ltcPayBtn").addEventListener("click", payWithLTC);
