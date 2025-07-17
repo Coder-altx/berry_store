@@ -18,9 +18,9 @@ function payWithRazorpay() {
     },
     "method": {
       upi: true,        // ✅ Show UPI option
-      card: false,
-      netbanking: false,
-      wallet: false
+      card: true,
+      netbanking: true,
+      wallet: true
     },
     "theme": {
       "color": "#F37254"
